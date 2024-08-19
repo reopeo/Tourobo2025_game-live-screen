@@ -9,7 +9,12 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/p5": "^1.7.6",
     "typescript": "^5.5.3",
     "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "@tier4/roslibjs-foxglove": "https://github.com/tier4/roslibjs-foxglove/releases/download/v0.0.3/tier4-roslibjs-foxglove-0.0.3.tgz",
+    "p5": "^1.10.0"
   }
 }
