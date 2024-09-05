@@ -25,9 +25,9 @@ match = {
   end_time: { sec: 0, nsec: 0 },
 
   red_team: {
-    name: 'R.U.R',
+    name: 'テクテク☆ロボコンズ',
     id: '',
-    university: '東京農工大学',
+    university: '豊橋技術科学大学',
     is_auto: false,
 
     seedlings: 0,
@@ -105,7 +105,7 @@ new p5((p: p5) => {
         20,
         50,
         {
-          size: 40,
+          size: 38,
           horizAlign: p.LEFT,
           vertAlign: p.CENTER,
           color: Color.white,
@@ -153,7 +153,7 @@ new p5((p: p5) => {
         p.width - 20,
         50,
         {
-          size: 40,
+          size: 38,
           horizAlign: p.RIGHT,
           vertAlign: p.CENTER,
           color: Color.white,
