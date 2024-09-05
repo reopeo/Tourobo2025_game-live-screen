@@ -58,19 +58,45 @@ match = {
   winner: Winner.UNKNOWN,
 };
 
-const ros = new ROSLIB.Ros({ url: 'ws://192.168.0.118:8765' });
-const matchSub = new ROSLIB.Topic<Match>({
-  ros,
-  name: '/match/status',
-  messageType: 'game_state_interfaces/msg/Match',
-});
-matchSub.subscribe((msg) => {
-  match = msg;
-});
-// TODO: ROS再接続
+const ros = new ROSLIB.Ros({});
+let rosConnected = false;
+rosConnect(ros);
 
-// matchSub.unsubscribe();
-// ros.close();
+function rosConnect(ros: ROSLIB.Ros) {
+  ros.connect('ws://192.168.0.118:8765');
+  ros.on('connection', () => {
+    console.log('connected');
+    rosConnected = true;
+    const matchSub = new ROSLIB.Topic<Match>({
+      ros,
+      name: '/match/status',
+      messageType: 'game_state_interfaces/msg/Match',
+    });
+    matchSub.subscribe((msg) => {
+      match = msg;
+    });
+  });
+  ros.on('close', () => {
+    console.log('closed');
+    rosReconnect(ros);
+  });
+  ros.on('error', (error) => {
+    console.error(error);
+    rosReconnect(ros);
+  });
+}
+
+function sleep(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}
+
+async function rosReconnect(ros: ROSLIB.Ros) {
+  while (!rosConnected) {
+    console.log('reconnecting');
+    rosConnect(ros);
+    await sleep(5000);
+  }
+}
 
 new p5((p: p5) => {
   p.preload = () => {
