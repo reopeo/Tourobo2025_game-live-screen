@@ -21,8 +21,8 @@ match = {
   id: '',
   title: '',
 
-  start_time: { sec: 0, nanosec: 0 },
-  end_time: { sec: 0, nanosec: 0 },
+  start_time: { sec: 0, nsec: 0 },
+  end_time: { sec: 0, nsec: 0 },
 
   red_team: {
     name: 'R.U.R',
@@ -66,6 +66,7 @@ const matchSub = new ROSLIB.Topic<Match>({
 });
 matchSub.subscribe((msg) => {
   match = msg;
+  console.log(msg);
 });
 // TODO: ROS再接続
 
@@ -309,11 +310,11 @@ function drawText(
 }
 
 function rosTimeToMs(time: Time) {
-  return time.sec * 1000 + time.nanosec / 1000000;
+  return time.sec * 1000 + time.nsec / 1000000;
 }
 
 function isRosTimeZero(time: Time) {
-  return time.sec === 0 && time.nanosec === 0;
+  return time.sec === 0 && time.nsec === 0;
 }
 
 function msToText(ms: number) {
