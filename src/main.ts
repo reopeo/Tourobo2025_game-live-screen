@@ -1,3 +1,4 @@
+// TODO: Vゴール表示の実装
 import * as ROSLIB from '@tier4/roslibjs-foxglove';
 import hexRgb from 'hex-rgb';
 import { Color, UnivShortName } from './consts';
