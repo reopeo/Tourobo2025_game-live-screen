@@ -1,7 +1,7 @@
 import * as ROSLIB from '@tier4/roslibjs-foxglove';
 import hexRgb from 'hex-rgb';
 import { colors } from './colors';
-import { type Match, Time, Winner } from './msg';
+import { type Match, type Time, Winner } from './msg';
 import { p5 } from './p5';
 
 import './style.css';
