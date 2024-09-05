@@ -214,7 +214,7 @@ new p5((p: p5) => {
         20,
         match.red_team.type_1_a
           ? Color.red
-          : match.blue_team.type_1_a
+          : match.blue_team.type_1_b
             ? Color.blue
             : Color.white,
       );
@@ -236,7 +236,7 @@ new p5((p: p5) => {
         20,
         match.red_team.type_1_b
           ? Color.red
-          : match.blue_team.type_1_b
+          : match.blue_team.type_1_a
             ? Color.blue
             : Color.white,
       );
