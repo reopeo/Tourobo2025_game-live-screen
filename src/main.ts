@@ -64,6 +64,7 @@ rosConnect(ros);
 
 function rosConnect(ros: ROSLIB.Ros) {
   ros.connect('ws://192.168.0.118:8765');
+
   ros.on('connection', () => {
     console.log('connected');
     rosConnected = true;
@@ -76,25 +77,23 @@ function rosConnect(ros: ROSLIB.Ros) {
       match = msg;
     });
   });
+
   ros.on('close', () => {
     console.log('closed');
     rosReconnect(ros);
   });
+
   ros.on('error', (error) => {
     console.error(error);
     rosReconnect(ros);
   });
 }
 
-function sleep(ms: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
-}
-
 async function rosReconnect(ros: ROSLIB.Ros) {
   while (!rosConnected) {
     console.log('reconnecting');
     rosConnect(ros);
-    await sleep(5000);
+    await new Promise<void>((resolve) => setTimeout(resolve, 5000));
   }
 }
 
