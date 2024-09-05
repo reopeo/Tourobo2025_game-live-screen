@@ -16,5 +16,6 @@ new p5((p: p5) => {
     p.text(count.toString(), p.width / 2, p.height / 2);
     count++;
   };
+
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
 }, document.querySelector<HTMLDivElement>('#app')!);
