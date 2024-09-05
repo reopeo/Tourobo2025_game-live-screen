@@ -123,7 +123,7 @@ new p5((p: p5) => {
         80,
         match.red_team.is_auto ? Color.green : Color.yellow,
         [0, 0, 0, 20],
-      ); // yellow 8
+      );
       drawText(
         p,
         `${match.red_team.name} (${UnivShortName[match.red_team.university]})`,
