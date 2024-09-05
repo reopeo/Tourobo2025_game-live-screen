@@ -1,4 +1,4 @@
-import p5_ from "p5";
+import p5_ from 'p5';
 
 declare global {
   var p5: typeof p5_;

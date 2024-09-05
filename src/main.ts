@@ -1,7 +1,6 @@
-import "./style.css";
+import './style.css';
 
-import { p5 } from "./p5";
-import * as ROSLIB from "@tier4/roslibjs-foxglove";
+import { p5 } from './p5';
 
 let count = 0;
 
@@ -17,4 +16,5 @@ new p5((p: p5) => {
     p.text(count.toString(), p.width / 2, p.height / 2);
     count++;
   };
-}, document.querySelector<HTMLDivElement>("#app")!);
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+}, document.querySelector<HTMLDivElement>('#app')!);
