@@ -66,7 +66,6 @@ const matchSub = new ROSLIB.Topic<Match>({
 });
 matchSub.subscribe((msg) => {
   match = msg;
-  console.log(msg);
 });
 // TODO: ROS再接続
 
