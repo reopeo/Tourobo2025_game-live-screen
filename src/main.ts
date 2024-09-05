@@ -1,7 +1,7 @@
 import * as ROSLIB from '@tier4/roslibjs-foxglove';
 import hexRgb from 'hex-rgb';
 import { colors } from './colors';
-import { type Match, Winner } from './msg';
+import { type Match, Time, Winner } from './msg';
 import { p5 } from './p5';
 
 import './style.css';
@@ -190,13 +190,21 @@ new p5((p: p5) => {
         `${colors.black}ee`,
         [0, 0, 20, 20],
       );
-      drawText(p, '1:23', p.width / 2, 100 - 20, {
-        size: 120,
-        horizAlign: p.CENTER,
-        vertAlign: p.CENTER,
-        color: colors.white,
-        font: SUSE_Bold,
-      });
+      drawText(
+        p,
+        isRosTimeZero(match.start_time)
+          ? `${msToText(rosTimeToMs(match.start_time))}`
+          : `${msToText(Date.now() - rosTimeToMs(match.start_time))}`,
+        p.width / 2,
+        100 - 20,
+        {
+          size: 120,
+          horizAlign: p.CENTER,
+          vertAlign: p.CENTER,
+          color: colors.white,
+          font: SUSE_Bold,
+        },
+      );
       // ポール
       drawCircle(
         p,
@@ -297,4 +305,17 @@ function drawText(
   p.fill(red, green, blue, 255 * alpha);
   p.textFont(options.font);
   p.text(text, x, y);
+}
+
+function rosTimeToMs(time: Time) {
+  return time.sec * 1000 + time.nanosec / 1000000;
+}
+
+function isRosTimeZero(time: Time) {
+  return time.sec === 0 && time.nanosec === 0;
+}
+
+function msToText(ms: number) {
+  const sec = Math.floor(ms / 1000);
+  return `${Math.floor(sec / 60)}:${(sec % 60).toString().padStart(2, '0')}`;
 }
