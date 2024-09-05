@@ -1,4 +1,4 @@
-export const UnivShortNames: { [key: string]: string } = {
+export const UnivShortName: { [key: string]: string } = {
   豊橋技術科学大学: '豊橋技大',
   東京工業大学: '東工大',
   金沢工業大学: '金沢工大',

@@ -1,2 +1,2 @@
-export * from './Colors';
-export * from './UnivShortNames';
+export * from './Color';
+export * from './UnivShortName';
