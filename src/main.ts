@@ -1,6 +1,6 @@
 import * as ROSLIB from '@tier4/roslibjs-foxglove';
 import hexRgb from 'hex-rgb';
-import { colors } from './colors';
+import { Colors, UnivShortNames } from './consts';
 import { type Match, type Time, Winner } from './msg';
 import { p5 } from './p5';
 
@@ -8,7 +8,6 @@ import './style.css';
 
 import BIZUDPGothic_BoldSrc from './assets/BIZUDPGothic-Bold.ttf';
 import SUSE_BoldSrc from './assets/SUSE-Bold.ttf';
-import { univShortNames } from './univ-short-names';
 
 let BIZUDPGothic_Bold: p5.Font;
 let SUSE_Bold: p5.Font;
@@ -67,6 +66,7 @@ const matchSub = new ROSLIB.Topic<Match>({
 matchSub.subscribe((msg) => {
   match = msg;
 });
+// TODO: ROS再接続
 
 // matchSub.unsubscribe();
 // ros.close();
@@ -87,27 +87,27 @@ new p5((p: p5) => {
 
     if (match) {
       // 赤チーム
-      drawRect(p, 0, 0, 600, 100, colors.red);
-      drawRect(p, 0, 100, 600, 200, `${colors.white}cc`, [0, 0, 80, 0]);
+      drawRect(p, 0, 0, 600, 100, Colors.red);
+      drawRect(p, 0, 100, 600, 200, `${Colors.white}cc`, [0, 0, 80, 0]);
       drawRect(
         p,
         600 - 160,
         100,
         160,
         80,
-        match.red_team.is_auto ? colors.green : colors.yellow,
+        match.red_team.is_auto ? Colors.green : Colors.yellow,
         [0, 0, 0, 20],
       ); // yellow 8
       drawText(
         p,
-        `${match.red_team.name} (${univShortNames[match.red_team.university]})`,
+        `${match.red_team.name} (${UnivShortNames[match.red_team.university]})`,
         20,
         50,
         {
           size: 40,
           horizAlign: p.LEFT,
           vertAlign: p.CENTER,
-          color: colors.white,
+          color: Colors.white,
           font: BIZUDPGothic_Bold,
         },
       );
@@ -115,26 +115,26 @@ new p5((p: p5) => {
         size: 120,
         horizAlign: p.CENTER,
         vertAlign: p.CENTER,
-        color: colors.black,
+        color: Colors.black,
         font: SUSE_Bold,
       });
       drawText(p, match.red_team.is_auto ? '自動' : '手動', 600 - 80, 136, {
         size: 50,
         horizAlign: p.CENTER,
         vertAlign: p.CENTER,
-        color: colors.white,
+        color: Colors.white,
         font: BIZUDPGothic_Bold,
       });
 
       // 青チーム
-      drawRect(p, p.width - 600, 0, 600, 100, colors.blue);
+      drawRect(p, p.width - 600, 0, 600, 100, Colors.blue);
       drawRect(
         p,
         p.width - 600,
         100,
         600,
         200,
-        `${colors.white}cc`,
+        `${Colors.white}cc`,
         [0, 0, 0, 80],
       );
       drawRect(
@@ -143,19 +143,19 @@ new p5((p: p5) => {
         100,
         160,
         80,
-        match.blue_team.is_auto ? colors.green : colors.yellow,
+        match.blue_team.is_auto ? Colors.green : Colors.yellow,
         [0, 0, 20, 0],
       );
       drawText(
         p,
-        `${match.blue_team.name} (${univShortNames[match.blue_team.university]})`,
+        `${match.blue_team.name} (${UnivShortNames[match.blue_team.university]})`,
         p.width - 20,
         50,
         {
           size: 40,
           horizAlign: p.RIGHT,
           vertAlign: p.CENTER,
-          color: colors.white,
+          color: Colors.white,
           font: BIZUDPGothic_Bold,
         },
       );
@@ -163,7 +163,7 @@ new p5((p: p5) => {
         size: 120,
         horizAlign: p.CENTER,
         vertAlign: p.CENTER,
-        color: colors.black,
+        color: Colors.black,
         font: SUSE_Bold,
       });
       drawText(
@@ -175,7 +175,7 @@ new p5((p: p5) => {
           size: 50,
           horizAlign: p.CENTER,
           vertAlign: p.CENTER,
-          color: colors.white,
+          color: Colors.white,
           font: BIZUDPGothic_Bold,
         },
       );
@@ -187,7 +187,7 @@ new p5((p: p5) => {
         0,
         500,
         200,
-        `${colors.black}ee`,
+        `${Colors.black}ee`,
         [0, 0, 20, 20],
       );
       drawText(
@@ -201,7 +201,7 @@ new p5((p: p5) => {
           size: 120,
           horizAlign: p.CENTER,
           vertAlign: p.CENTER,
-          color: colors.white,
+          color: Colors.white,
           font: SUSE_Bold,
         },
       );
@@ -212,10 +212,10 @@ new p5((p: p5) => {
         40,
         20,
         match.red_team.type_1_a
-          ? colors.red
+          ? Colors.red
           : match.blue_team.type_1_a
-            ? colors.blue
-            : colors.white,
+            ? Colors.blue
+            : Colors.white,
       );
       drawCircle(
         p,
@@ -223,10 +223,10 @@ new p5((p: p5) => {
         100,
         20,
         match.red_team.type_2
-          ? colors.red
+          ? Colors.red
           : match.blue_team.type_2
-            ? colors.blue
-            : colors.white,
+            ? Colors.blue
+            : Colors.white,
       );
       drawCircle(
         p,
@@ -234,15 +234,15 @@ new p5((p: p5) => {
         160,
         20,
         match.red_team.type_1_b
-          ? colors.red
+          ? Colors.red
           : match.blue_team.type_1_b
-            ? colors.blue
-            : colors.white,
+            ? Colors.blue
+            : Colors.white,
       );
     }
 
     // 下部インフォメーション
-    drawRect(p, 0, p.height - 150, p.width, 150, colors.white);
+    drawRect(p, 0, p.height - 150, p.width, 150, Colors.white);
     drawText(
       p,
       match?.title ?? '任意のメッセージを出せるようにする',
@@ -252,7 +252,7 @@ new p5((p: p5) => {
         size: 50,
         horizAlign: p.LEFT,
         vertAlign: p.CENTER,
-        color: colors.black,
+        color: Colors.black,
         font: BIZUDPGothic_Bold,
       },
     );
