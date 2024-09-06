@@ -13,9 +13,7 @@ import SUSE_BoldSrc from './assets/SUSE-Bold.ttf';
 let BIZUDPGothic_Bold: p5.Font;
 let SUSE_Bold: p5.Font;
 
-let count = 0;
-
-let match: Match;
+let match: Match | null = null;
 
 match = {
   id: '',
@@ -58,44 +56,37 @@ match = {
   winner: Winner.UNKNOWN,
 };
 
-const ros = new ROSLIB.Ros({});
 let rosConnected = false;
-rosConnect(ros);
+function rosConnect() {
+  if (!rosConnected) {
+    const ros = new ROSLIB.Ros({ url: 'ws://192.168.0.118:8765' });
 
-function rosConnect(ros: ROSLIB.Ros) {
-  ros.connect('ws://192.168.0.118:8765');
-
-  ros.on('connection', () => {
-    console.log('connected');
-    rosConnected = true;
-    const matchSub = new ROSLIB.Topic<Match>({
-      ros,
-      name: '/match/status',
-      messageType: 'game_state_interfaces/msg/Match',
+    ros.on('connection', () => {
+      console.log('connected');
+      rosConnected = true;
+      const matchSub = new ROSLIB.Topic<Match>({
+        ros,
+        name: '/match/status',
+        messageType: 'game_state_interfaces/msg/Match',
+      });
+      matchSub.subscribe((msg) => {
+        match = msg;
+      });
     });
-    matchSub.subscribe((msg) => {
-      match = msg;
+
+    ros.on('close', () => {
+      console.log('closed');
+      rosConnected = false;
     });
-  });
 
-  ros.on('close', () => {
-    console.log('closed');
-    rosReconnect(ros);
-  });
-
-  ros.on('error', (error) => {
-    console.error(error);
-    rosReconnect(ros);
-  });
-}
-
-async function rosReconnect(ros: ROSLIB.Ros) {
-  while (!rosConnected) {
-    console.log('reconnecting');
-    rosConnect(ros);
-    await new Promise<void>((resolve) => setTimeout(resolve, 5000));
+    ros.on('error', (error) => {
+      console.error(error);
+      rosConnected = false;
+    });
   }
 }
+rosConnect();
+setInterval(rosConnect, 5000);
 
 new p5((p: p5) => {
   p.preload = () => {
@@ -110,239 +101,228 @@ new p5((p: p5) => {
   p.draw = () => {
     p.clear();
     p.strokeWeight(0);
-
-    if (match) {
-      // 赤チーム
-      drawRect(p, 0, 0, 600, 100, Color.red);
-      drawRect(p, 0, 100, 600, 200, `${Color.white}cc`, [0, 0, 80, 0]);
-      drawRect(
-        p,
-        600 - 160,
-        100,
-        160,
-        80,
-        match.red_team.is_auto ? Color.green : Color.yellow,
-        [0, 0, 0, 20],
-      );
-      drawText(
-        p,
-        `${match.red_team.name} (${UnivShortName[match.red_team.university]})`,
-        20,
-        50,
-        {
-          size: 38,
-          horizAlign: p.LEFT,
-          vertAlign: p.CENTER,
-          color: Color.white,
-          font: BIZUDPGothic_Bold,
-        },
-      );
-      drawText(
-        p,
-        `${match.red_team.v_goal ? 'V GOAL' : match.red_team.score}`,
-        250,
-        200 - 20,
-        {
-          size: 120,
-          horizAlign: p.CENTER,
-          vertAlign: p.CENTER,
-          color: Color.black,
-          font: SUSE_Bold,
-        },
-      );
-      drawText(p, match.red_team.is_auto ? '自動' : '手動', 600 - 80, 136, {
-        size: 50,
-        horizAlign: p.CENTER,
-        vertAlign: p.CENTER,
-        color: Color.white,
-        font: BIZUDPGothic_Bold,
-      });
-
-      // 青チーム
-      drawRect(p, p.width - 600, 0, 600, 100, Color.blue);
-      drawRect(
-        p,
-        p.width - 600,
-        100,
-        600,
-        200,
-        `${Color.white}cc`,
-        [0, 0, 0, 80],
-      );
-      drawRect(
-        p,
-        p.width - 600,
-        100,
-        160,
-        80,
-        match.blue_team.is_auto ? Color.green : Color.yellow,
-        [0, 0, 20, 0],
-      );
-      drawText(
-        p,
-        `${match.blue_team.name} (${UnivShortName[match.blue_team.university]})`,
-        p.width - 20,
-        50,
-        {
-          size: 38,
-          horizAlign: p.RIGHT,
-          vertAlign: p.CENTER,
-          color: Color.white,
-          font: BIZUDPGothic_Bold,
-        },
-      );
-      drawText(
-        p,
-        `${match.blue_team.v_goal ? 'V GOAL' : match.blue_team.score}`,
-        p.width - 250,
-        200 - 20,
-        {
-          size: 120,
-          horizAlign: p.CENTER,
-          vertAlign: p.CENTER,
-          color: Color.black,
-          font: SUSE_Bold,
-        },
-      );
-      drawText(
-        p,
-        match.blue_team.is_auto ? '自動' : '手動',
-        p.width - 600 + 80,
-        136,
-        {
-          size: 50,
-          horizAlign: p.CENTER,
-          vertAlign: p.CENTER,
-          color: Color.white,
-          font: BIZUDPGothic_Bold,
-        },
-      );
-
-      // 中央タイマーなど
-      drawRect(
-        p,
-        p.width / 2 - 250,
-        0,
-        500,
-        200,
-        `${Color.black}ee`,
-        [0, 0, 20, 20],
-      );
-      drawText(
-        p,
-        isRosTimeZero(match.start_time)
-          ? `${msToText(rosTimeToMs(match.start_time))}`
-          : `${msToText(Date.now() - rosTimeToMs(match.start_time))}`,
-        p.width / 2,
-        100 - 20,
-        {
-          size: 120,
-          horizAlign: p.CENTER,
-          vertAlign: p.CENTER,
-          color: Color.white,
-          font: SUSE_Bold,
-        },
-      );
-      // ポール
-      drawCircle(
-        p,
-        p.width / 2 + 250 - 40,
-        40,
-        20,
-        match.red_team.type_1_a
-          ? Color.red
-          : match.blue_team.type_1_b
-            ? Color.blue
-            : Color.white,
-      );
-      drawCircle(
-        p,
-        p.width / 2 + 250 - 40,
-        100,
-        20,
-        match.red_team.type_2
-          ? Color.red
-          : match.blue_team.type_2
-            ? Color.blue
-            : Color.white,
-      );
-      drawCircle(
-        p,
-        p.width / 2 + 250 - 40,
-        160,
-        20,
-        match.red_team.type_1_b
-          ? Color.red
-          : match.blue_team.type_1_a
-            ? Color.blue
-            : Color.white,
-      );
+    if (!match) {
+      return;
     }
 
-    // 下部インフォメーション
-    drawRect(p, 0, p.height - 150, p.width, 150, Color.white);
+    // 赤チーム
+    drawRect(p, Color.red, 0, 0, 600, 100);
+    drawRect(p, `${Color.white}cc`, 0, 100, 600, 200, 0, 0, 80, 0);
+    drawRect(
+      p,
+      match.red_team.is_auto ? Color.green : Color.yellow,
+      600 - 140,
+      100,
+      140,
+      80,
+      0,
+      0,
+      0,
+      20,
+    );
     drawText(
       p,
+      Color.white,
+      BIZUDPGothic_Bold,
+      38,
+      p.LEFT,
+      p.CENTER,
+      `${match.red_team.name} (${UnivShortName[match.red_team.university]})`,
+      20,
+      48,
+    );
+    drawText(
+      p,
+      Color.black,
+      SUSE_Bold,
+      match.red_team.v_goal ? 100 : 120,
+      p.CENTER,
+      p.CENTER,
+      `${match.red_team.v_goal ? 'V GOAL' : match.red_team.score}`,
+      225,
+      match.red_team.v_goal ? 185 : 180,
+    );
+    drawText(
+      p,
+      Color.white,
+      BIZUDPGothic_Bold,
+      38,
+      p.CENTER,
+      p.CENTER,
+      match.red_team.is_auto ? '自動' : '手動',
+      600 - 70,
+      138,
+    );
+
+    // 青チーム
+    drawRect(p, Color.blue, p.width - 600, 0, 600, 100);
+    drawRect(p, `${Color.white}cc`, p.width - 600, 100, 600, 200, 0, 0, 0, 80);
+    drawRect(
+      p,
+      match.blue_team.is_auto ? Color.green : Color.yellow,
+      p.width - 600,
+      100,
+      140,
+      80,
+      0,
+      0,
+      20,
+      0,
+    );
+    drawText(
+      p,
+      Color.white,
+      BIZUDPGothic_Bold,
+      38,
+      p.RIGHT,
+      p.CENTER,
+      `${match.blue_team.name} (${UnivShortName[match.blue_team.university]})`,
+      p.width - 20,
+      48,
+    );
+    drawText(
+      p,
+      Color.black,
+      SUSE_Bold,
+      match.blue_team.v_goal ? 100 : 120,
+      p.CENTER,
+      p.CENTER,
+      `${match.blue_team.v_goal ? 'V GOAL' : match.blue_team.score}`,
+      p.width - 225,
+      match.blue_team.v_goal ? 185 : 180,
+    );
+    drawText(
+      p,
+      Color.white,
+      BIZUDPGothic_Bold,
+      38,
+      p.CENTER,
+      p.CENTER,
+      match.blue_team.is_auto ? '自動' : '手動',
+      p.width - 600 + 70,
+      138,
+    );
+
+    // 中央タイマーなど
+    drawRect(
+      p,
+      `${Color.black}ee`,
+      p.width / 2 - 250,
+      0,
+      500,
+      200,
+      0,
+      0,
+      20,
+      20,
+    );
+    drawText(
+      p,
+      Color.white,
+      SUSE_Bold,
+      120,
+      p.CENTER,
+      p.CENTER,
+      isRosTimeZero(match.start_time)
+        ? `${msToText(rosTimeToMs(match.start_time))}`
+        : `${msToText(Date.now() - rosTimeToMs(match.start_time))}`,
+      p.width / 2,
+      80,
+    );
+    // ポール
+    drawCircle(
+      p,
+      match.red_team.type_1_a
+        ? Color.red
+        : match.blue_team.type_1_b
+          ? Color.blue
+          : Color.white,
+      p.width / 2 + 250 - 40,
+      40,
+      40,
+    );
+    drawCircle(
+      p,
+      match.red_team.type_2
+        ? Color.red
+        : match.blue_team.type_2
+          ? Color.blue
+          : Color.white,
+      p.width / 2 + 250 - 40,
+      100,
+      40,
+    );
+    drawCircle(
+      p,
+      match.red_team.type_1_b
+        ? Color.red
+        : match.blue_team.type_1_a
+          ? Color.blue
+          : Color.white,
+      p.width / 2 + 250 - 40,
+      160,
+      40,
+    );
+
+    // 下部
+    drawRect(p, Color.white, 0, p.height - 150, p.width, 150);
+    drawText(
+      p,
+      Color.black,
+      BIZUDPGothic_Bold,
+      50,
+      p.LEFT,
+      p.CENTER,
       `${match.title} - ${isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : `${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : '判定中'}`}`,
       20,
-      p.height - 75,
-      {
-        size: 50,
-        horizAlign: p.LEFT,
-        vertAlign: p.CENTER,
-        color: Color.black,
-        font: BIZUDPGothic_Bold,
-      },
+      p.height - 78,
     );
-    count++;
   };
 
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
 }, document.querySelector<HTMLDivElement>('#app')!);
 
+function fillWithHex(p: p5, color: string) {
+  const { red, green, blue, alpha } = hexRgb(color);
+  p.fill(red, green, blue, 255 * alpha);
+}
+
 function drawRect(
   p: p5,
+  color: string,
   x: number,
   y: number,
   w: number,
   h: number,
-  color: string,
-  br?: [number, number, number, number],
+  tl?: number,
+  tr?: number,
+  br?: number,
+  bl?: number,
 ) {
-  const { red, green, blue, alpha } = hexRgb(color);
-  p.fill(red, green, blue, 255 * alpha);
-  if (br) {
-    p.rect(x, y, w, h, ...br);
-  } else {
-    p.rect(x, y, w, h);
-  }
+  fillWithHex(p, color);
+  p.rect(x, y, w, h, tl, tr, br, bl);
 }
 
-function drawCircle(p: p5, x: number, y: number, r: number, color: string) {
-  const { red, green, blue, alpha } = hexRgb(color);
-  p.fill(red, green, blue, 255 * alpha);
-  p.circle(x, y, r * 2);
+function drawCircle(p: p5, color: string, x: number, y: number, d: number) {
+  fillWithHex(p, color);
+  p.circle(x, y, d);
 }
 
 function drawText(
   p: p5,
-  text: string,
+  color: string,
+  font: p5.Font,
+  size: number,
+  horizAlign: p5.HORIZ_ALIGN,
+  vertAlign: p5.VERT_ALIGN,
+  str: string,
   x: number,
   y: number,
-  options: {
-    size: number;
-    horizAlign: p5.HORIZ_ALIGN;
-    vertAlign: p5.VERT_ALIGN;
-    color: string;
-    font: p5.Font;
-  },
 ) {
-  const { red, green, blue, alpha } = hexRgb(options.color);
-  p.textSize(options.size);
-  p.textAlign(options.horizAlign, options.vertAlign);
-  p.fill(red, green, blue, 255 * alpha);
-  p.textFont(options.font);
-  p.text(text, x, y);
+  fillWithHex(p, color);
+  p.textFont(font, size);
+  p.textAlign(horizAlign, vertAlign);
+  p.text(str, x, y);
 }
 
 function rosTimeToMs(time: Time) {
