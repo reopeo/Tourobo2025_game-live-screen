@@ -249,7 +249,9 @@ new p5((p: p5) => {
       p.CENTER,
       isRosTimeZero(match.start_time)
         ? `${msToText(rosTimeToMs(match.start_time))}`
-        : `${msToText(Date.now() - rosTimeToMs(match.start_time))}`,
+        : !isRosTimeZero(match.end_time)
+          ? `${msToText(rosTimeToMs(match.end_time) - rosTimeToMs(match.start_time))}`
+          : `${msToText(Date.now() - rosTimeToMs(match.start_time))}`,
       p.width / 2,
       80,
     );
@@ -297,7 +299,7 @@ new p5((p: p5) => {
       50,
       p.LEFT,
       p.CENTER,
-      `${match.title} - ${isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : `${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : '判定中'}`}`,
+      `${match.title} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
       20,
       p.height - 78,
     );
