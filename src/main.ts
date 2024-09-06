@@ -283,7 +283,7 @@ new p5((p: p5) => {
     drawRect(p, 0, p.height - 150, p.width, 150, Color.white);
     drawText(
       p,
-      `${match.title} - ${isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : `${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青チーム側の勝利' : '判定中'}`}`,
+      `${match.title} - ${isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : `${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : '判定中'}`}`,
       20,
       p.height - 75,
       {
