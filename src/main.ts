@@ -14,47 +14,6 @@ let SUSE_Bold: p5.Font;
 
 let match: Match | null = null;
 
-match = {
-  id: '',
-  title: '',
-
-  start_time: { sec: 0, nsec: 0 },
-  end_time: { sec: 0, nsec: 0 },
-
-  red_team: {
-    name: 'テクテク☆ロボコンズ',
-    id: '',
-    university: '豊橋技術科学大学',
-    is_auto: false,
-
-    seedlings: 0,
-    immigration: false,
-    type_1_a: true,
-    type_1_b: false,
-    type_2: false,
-    v_goal: false,
-
-    score: 0,
-  },
-  blue_team: {
-    name: '',
-    id: '',
-    university: '',
-    is_auto: false,
-
-    seedlings: 0,
-    immigration: false,
-    type_1_a: false,
-    type_1_b: true,
-    type_2: false,
-    v_goal: false,
-
-    score: 0,
-  },
-
-  winner: Winner.UNKNOWN,
-};
-
 let rosConnected = false;
 function rosConnect() {
   if (!rosConnected) {
@@ -127,17 +86,42 @@ new p5((p: p5) => {
       20,
       48,
     );
-    drawText(
-      p,
-      Color.black,
-      SUSE_Bold,
-      match.red_team.v_goal ? 100 : 120,
-      p.CENTER,
-      p.CENTER,
-      `${match.red_team.v_goal ? 'V GOAL' : match.red_team.score}`,
-      225,
-      match.red_team.v_goal ? 185 : 180,
-    );
+    if (match.red_team.v_goal) {
+      drawText(
+        p,
+        Color.black,
+        SUSE_Bold,
+        100,
+        p.CENTER,
+        p.CENTER,
+        'V GOAL',
+        225,
+        150,
+      );
+      drawText(
+        p,
+        Color.black,
+        SUSE_Bold,
+        70,
+        p.CENTER,
+        p.CENTER,
+        `${msToText(rosTimeToMs(match.end_time) - rosTimeToMs(match.start_time))}`,
+        225,
+        240,
+      );
+    } else {
+      drawText(
+        p,
+        Color.black,
+        SUSE_Bold,
+        120,
+        p.CENTER,
+        p.CENTER,
+        `${match.red_team.score}`,
+        225,
+        180,
+      );
+    }
     drawText(
       p,
       Color.white,
@@ -184,17 +168,42 @@ new p5((p: p5) => {
       p.width - 20,
       48,
     );
-    drawText(
-      p,
-      Color.black,
-      SUSE_Bold,
-      match.blue_team.v_goal ? 100 : 120,
-      p.CENTER,
-      p.CENTER,
-      `${match.blue_team.v_goal ? 'V GOAL' : match.blue_team.score}`,
-      p.width - 225,
-      match.blue_team.v_goal ? 185 : 180,
-    );
+    if (match.blue_team.v_goal) {
+      drawText(
+        p,
+        Color.black,
+        SUSE_Bold,
+        100,
+        p.CENTER,
+        p.CENTER,
+        'V GOAL',
+        p.width - 225,
+        150,
+      );
+      drawText(
+        p,
+        Color.black,
+        SUSE_Bold,
+        70,
+        p.CENTER,
+        p.CENTER,
+        `${msToText(rosTimeToMs(match.end_time) - rosTimeToMs(match.start_time))}`,
+        p.width - 225,
+        240,
+      );
+    } else {
+      drawText(
+        p,
+        Color.black,
+        SUSE_Bold,
+        120,
+        p.CENTER,
+        p.CENTER,
+        `${match.blue_team.score}`,
+        p.width - 225,
+        180,
+      );
+    }
     drawText(
       p,
       Color.white,
