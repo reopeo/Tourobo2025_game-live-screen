@@ -106,19 +106,16 @@ new p5((p: p5) => {
 
     // 赤チーム
     drawRect(p, Color.red, 0, 0, 600, 100);
-    drawRect(p, `${Color.white}cc`, 0, 100, 600, 200, 0, 0, 80, 0);
+    drawRect(p, `${Color.white}cc`, 0, 100, 600, 200, 0, 0, 50, 0);
     drawRect(
       p,
       match.red_team.is_auto ? Color.green : Color.yellow,
-      600 - 140,
+      600 - 160,
       100,
-      140,
-      80,
-      0,
-      0,
-      0,
-      20,
+      160,
+      70,
     );
+    drawRect(p, Color.white, 600 - 160, 170, 160, 70, 0, 0, 0, 20);
     drawText(
       p,
       Color.white,
@@ -149,25 +146,33 @@ new p5((p: p5) => {
       p.CENTER,
       p.CENTER,
       match.red_team.is_auto ? '自動' : '手動',
-      600 - 70,
-      138,
+      600 - 80,
+      133,
+    );
+    drawText(
+      p,
+      Color.black,
+      BIZUDPGothic_Bold,
+      38,
+      p.CENTER,
+      p.CENTER,
+      match.red_team.immigration ? '入国済' : '未入国',
+      600 - 80,
+      203,
     );
 
     // 青チーム
     drawRect(p, Color.blue, p.width - 600, 0, 600, 100);
-    drawRect(p, `${Color.white}cc`, p.width - 600, 100, 600, 200, 0, 0, 0, 80);
+    drawRect(p, `${Color.white}cc`, p.width - 600, 100, 600, 200, 0, 0, 0, 50);
     drawRect(
       p,
       match.blue_team.is_auto ? Color.green : Color.yellow,
       p.width - 600,
       100,
-      140,
-      80,
-      0,
-      0,
-      20,
-      0,
+      160,
+      70,
     );
+    drawRect(p, Color.white, p.width - 600, 170, 160, 70, 0, 0, 20, 0);
     drawText(
       p,
       Color.white,
@@ -198,8 +203,19 @@ new p5((p: p5) => {
       p.CENTER,
       p.CENTER,
       match.blue_team.is_auto ? '自動' : '手動',
-      p.width - 600 + 70,
-      138,
+      p.width - 600 + 80,
+      133,
+    );
+    drawText(
+      p,
+      Color.black,
+      BIZUDPGothic_Bold,
+      38,
+      p.CENTER,
+      p.CENTER,
+      match.red_team.immigration ? '入国済' : '未入国',
+      p.width - 600 + 80,
+      203,
     );
 
     // 中央タイマーなど
