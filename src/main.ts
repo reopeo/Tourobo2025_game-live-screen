@@ -15,7 +15,7 @@ let SUSE_Bold: p5.Font;
 
 let count = 0;
 
-let match: Match | null = null;
+let match: Match;
 
 match = {
   id: '',
@@ -137,13 +137,19 @@ new p5((p: p5) => {
           font: BIZUDPGothic_Bold,
         },
       );
-      drawText(p, `${match.red_team.score}`, 250, 200 - 20, {
-        size: 120,
-        horizAlign: p.CENTER,
-        vertAlign: p.CENTER,
-        color: Color.black,
-        font: SUSE_Bold,
-      });
+      drawText(
+        p,
+        `${match.red_team.v_goal ? 'V GOAL' : match.red_team.score}`,
+        250,
+        200 - 20,
+        {
+          size: 120,
+          horizAlign: p.CENTER,
+          vertAlign: p.CENTER,
+          color: Color.black,
+          font: SUSE_Bold,
+        },
+      );
       drawText(p, match.red_team.is_auto ? '自動' : '手動', 600 - 80, 136, {
         size: 50,
         horizAlign: p.CENTER,
@@ -185,13 +191,19 @@ new p5((p: p5) => {
           font: BIZUDPGothic_Bold,
         },
       );
-      drawText(p, `${match.blue_team.score}`, p.width - 250, 200 - 20, {
-        size: 120,
-        horizAlign: p.CENTER,
-        vertAlign: p.CENTER,
-        color: Color.black,
-        font: SUSE_Bold,
-      });
+      drawText(
+        p,
+        `${match.blue_team.v_goal ? 'V GOAL' : match.blue_team.score}`,
+        p.width - 250,
+        200 - 20,
+        {
+          size: 120,
+          horizAlign: p.CENTER,
+          vertAlign: p.CENTER,
+          color: Color.black,
+          font: SUSE_Bold,
+        },
+      );
       drawText(
         p,
         match.blue_team.is_auto ? '自動' : '手動',
@@ -271,7 +283,7 @@ new p5((p: p5) => {
     drawRect(p, 0, p.height - 150, p.width, 150, Color.white);
     drawText(
       p,
-      match?.title ?? '任意のメッセージを出せるようにする',
+      `${match.title} - ${isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : `${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青チーム側の勝利' : '判定中'}`}`,
       20,
       p.height - 75,
       {
