@@ -299,7 +299,7 @@ new p5((p: p5) => {
       50,
       p.LEFT,
       p.CENTER,
-      `${match.title} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
+      `とうロボ2024 - ${match.title} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
       20,
       p.height - 78,
     );
