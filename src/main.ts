@@ -13,6 +13,7 @@ let BIZUDPGothic_Bold: p5.Font;
 let SUSE_Bold: p5.Font;
 
 let match: Match | null = null;
+let timeDelta = 0;
 
 let rosConnected = false;
 function rosConnect() {
@@ -29,6 +30,15 @@ function rosConnect() {
       });
       matchSub.subscribe((msg) => {
         match = msg;
+      });
+
+      const clockSub = new ROSLIB.Topic<Time>({
+        ros,
+        name: '/match/clock',
+        messageType: 'builtin_interfaces/msg/Time',
+      });
+      clockSub.subscribe((msg) => {
+        timeDelta = rosTimeToMs(msg) - Date.now();
       });
     });
 
@@ -257,7 +267,7 @@ new p5((p: p5) => {
         ? `${msToText(rosTimeToMs(match.start_time))}`
         : !isRosTimeZero(match.end_time)
           ? `${msToText(rosTimeToMs(match.end_time) - rosTimeToMs(match.start_time))}`
-          : `${msToText(Date.now() - rosTimeToMs(match.start_time))}`,
+          : `${msToText(Date.now() - rosTimeToMs(match.start_time) + timeDelta)}`,
       p.width / 2,
       80,
     );
