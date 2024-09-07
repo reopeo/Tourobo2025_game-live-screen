@@ -1,9 +1,9 @@
 import type { Team, Time } from '.';
 
 export const Winner = {
-  RED: 0,
-  BLUE: 1,
-  UNKNOWN: 2,
+  UNKNOWN: 0,
+  RED: 1,
+  BLUE: 2,
 } as const;
 
 export interface Match {
