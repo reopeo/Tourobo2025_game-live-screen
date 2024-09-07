@@ -375,11 +375,11 @@ function drawText(
 }
 
 function rosTimeToMs(time: Time) {
-  return time.sec * 1000 + time.nsec / 1000000;
+  return time.sec * 1000 + (time.nanosec ?? time.nsec ?? 0) / 1000000;
 }
 
 function isRosTimeZero(time: Time) {
-  return time.sec === 0 && time.nsec === 0;
+  return time.sec === 0 && (time.nanosec ?? time.nsec ?? 0) === 0;
 }
 
 function msToText(ms: number) {

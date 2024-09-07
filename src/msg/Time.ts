@@ -1,4 +1,5 @@
 export interface Time {
   sec: number;
-  nsec: number;
+  nanosec: number | undefined;
+  nsec: number | undefined;
 }
