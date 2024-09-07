@@ -17,7 +17,7 @@ let match: Match | null = null;
 let rosConnected = false;
 function rosConnect() {
   if (!rosConnected) {
-    const ros = new ROSLIB.Ros({ url: `ws://${'192.168.0.100'}:8765` });
+    const ros = new ROSLIB.Ros({ url: `ws://${location.hostname}:8765` });
 
     ros.on('connection', () => {
       console.log('connected');
