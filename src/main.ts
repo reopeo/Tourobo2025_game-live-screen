@@ -69,7 +69,21 @@ new p5((p: p5) => {
   p.draw = () => {
     p.clear();
     p.strokeWeight(0);
+    // 下部
+    drawRect(p, Color.white, 0, p.height - 150, p.width, 150);
+
     if (!match) {
+      drawText(
+        p,
+        Color.black,
+        BIZUDPGothic_Bold,
+        50,
+        p.LEFT,
+        p.CENTER,
+        'とうロボ2024 - トーナメント表・試合結果は概要欄から！',
+        20,
+        p.height - 78,
+      );
       if (rosConnected) {
         p.fill('green');
       } else {
@@ -78,6 +92,29 @@ new p5((p: p5) => {
       p.circle(p.width / 2 - 250 + 20, 20, 40);
       return;
     }
+
+    drawText(
+      p,
+      Color.black,
+      BIZUDPGothic_Bold,
+      50,
+      p.LEFT,
+      p.CENTER,
+      `とうロボ2024${match.title ? ` - ${match.title}` : ''} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
+      20,
+      p.height - 100,
+    );
+    drawText(
+      p,
+      Color.black,
+      BIZUDPGothic_Bold,
+      42,
+      p.LEFT,
+      p.CENTER,
+      'トーナメント表・試合結果は概要欄から！',
+      20,
+      p.height - 40,
+    );
 
     // 赤チーム
     drawRect(p, Color.red, 0, 0, 600, 100);
@@ -304,20 +341,6 @@ new p5((p: p5) => {
       p.width / 2 + 250 - 40,
       160,
       40,
-    );
-
-    // 下部
-    drawRect(p, Color.white, 0, p.height - 150, p.width, 150);
-    drawText(
-      p,
-      Color.black,
-      BIZUDPGothic_Bold,
-      50,
-      p.LEFT,
-      p.CENTER,
-      `とうロボ2024${match.title ? ` - ${match.title}` : ''} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
-      20,
-      p.height - 78,
     );
 
     if (rosConnected) {
