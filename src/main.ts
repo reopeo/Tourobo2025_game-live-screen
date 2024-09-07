@@ -82,7 +82,7 @@ new p5((p: p5) => {
       38,
       p.LEFT,
       p.CENTER,
-      `${match.red_team.name} (${UnivShortName[match.red_team.university]})`,
+      `${match.red_team.name}${UnivShortName[match.red_team.university] ? ` (${UnivShortName[match.red_team.university]})` : ''}`,
       20,
       48,
     );
@@ -164,7 +164,7 @@ new p5((p: p5) => {
       38,
       p.RIGHT,
       p.CENTER,
-      `${match.blue_team.name} (${UnivShortName[match.blue_team.university]})`,
+      `${match.blue_team.name}${UnivShortName[match.blue_team.university] ? ` (${UnivShortName[match.blue_team.university]})` : ''}`,
       p.width - 20,
       48,
     );
@@ -299,7 +299,7 @@ new p5((p: p5) => {
       50,
       p.LEFT,
       p.CENTER,
-      `とうロボ2024 - ${match.title} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
+      `とうロボ2024${match.title ? ` - ${match.title}` : ''} - ${`${match.winner === Winner.RED ? '赤ゾーン側の勝利' : match.winner === Winner.BLUE ? '青ゾーン側の勝利' : isRosTimeZero(match.start_time) ? '試合開始前' : isRosTimeZero(match.end_time) ? '試合中' : '判定中'}`}`,
       20,
       p.height - 78,
     );
