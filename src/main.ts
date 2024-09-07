@@ -17,7 +17,7 @@ let match: Match | null = null;
 let rosConnected = false;
 function rosConnect() {
   if (!rosConnected) {
-    const ros = new ROSLIB.Ros({ url: `ws://${location.hostname}:8765` });
+    const ros = new ROSLIB.Ros({ url: `ws://${'192.168.0.100'}:8765` });
 
     ros.on('connection', () => {
       console.log('connected');
@@ -60,6 +60,12 @@ new p5((p: p5) => {
     p.clear();
     p.strokeWeight(0);
     if (!match) {
+      if (rosConnected) {
+        p.fill('green');
+      } else {
+        p.fill('red');
+      }
+      p.circle(p.width / 2 - 250 + 20, 20, 40);
       return;
     }
 
@@ -303,6 +309,13 @@ new p5((p: p5) => {
       20,
       p.height - 78,
     );
+
+    if (rosConnected) {
+      p.fill('green');
+    } else {
+      p.fill('red');
+    }
+    p.circle(p.width / 2 - 250 + 20, 20, 40);
   };
 
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
