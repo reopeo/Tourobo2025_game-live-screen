@@ -275,7 +275,7 @@ new p5((p: p5) => {
       38,
       p.CENTER,
       p.CENTER,
-      match.red_team.immigration ? '入国済' : '未入国',
+      match.blue_team.immigration ? '入国済' : '未入国',
       p.width - 600 + 80,
       203,
     );
