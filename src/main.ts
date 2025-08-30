@@ -119,14 +119,14 @@ new p5((p: p5) => {
     // 赤チーム
     drawRect(p, Color.red, 0, 0, 600, 100);
     drawRect(p, `${Color.white}cc`, 0, 100, 600, 200, 0, 0, 50, 0);
-    drawRect(
-      p,
-      match.red_team.is_auto ? Color.green : Color.yellow,
-      600 - 160,
-      100,
-      160,
-      70,
-    );
+    // drawRect(
+    //   p,
+    //   match.red_team.is_auto ? Color.green : Color.yellow,
+    //   600 - 160,
+    //   100,
+    //   160,
+    //   70,
+    // );
     drawRect(p, Color.white, 600 - 160, 170, 160, 70, 0, 0, 0, 20);
     drawText(
       p,
@@ -175,40 +175,40 @@ new p5((p: p5) => {
         180,
       );
     }
-    drawText(
-      p,
-      Color.white,
-      BIZUDPGothic_Bold,
-      38,
-      p.CENTER,
-      p.CENTER,
-      match.red_team.is_auto ? '自動' : '手動',
-      600 - 80,
-      133,
-    );
-    drawText(
-      p,
-      Color.black,
-      BIZUDPGothic_Bold,
-      38,
-      p.CENTER,
-      p.CENTER,
-      match.red_team.immigration ? '入国済' : '未入国',
-      600 - 80,
-      203,
-    );
+    // drawText(
+    //   p,
+    //   Color.white,
+    //   BIZUDPGothic_Bold,
+    //   38,
+    //   p.CENTER,
+    //   p.CENTER,
+    //   match.red_team.is_auto ? '自動' : '手動',
+    //   600 - 80,
+    //   133,
+    // );
+    // drawText(
+    //   p,
+    //   Color.black,
+    //   BIZUDPGothic_Bold,
+    //   38,
+    //   p.CENTER,
+    //   p.CENTER,
+    //   match.red_team.immigration ? '入国済' : '未入国',
+    //   600 - 80,
+    //   203,
+    // );
 
     // 青チーム
     drawRect(p, Color.blue, p.width - 600, 0, 600, 100);
     drawRect(p, `${Color.white}cc`, p.width - 600, 100, 600, 200, 0, 0, 0, 50);
-    drawRect(
-      p,
-      match.blue_team.is_auto ? Color.green : Color.yellow,
-      p.width - 600,
-      100,
-      160,
-      70,
-    );
+    // drawRect(
+    //   p,
+    //   match.blue_team.is_auto ? Color.green : Color.yellow,
+    //   p.width - 600,
+    //   100,
+    //   160,
+    //   70,
+    // );
     drawRect(p, Color.white, p.width - 600, 170, 160, 70, 0, 0, 20, 0);
     drawText(
       p,
@@ -257,28 +257,28 @@ new p5((p: p5) => {
         180,
       );
     }
-    drawText(
-      p,
-      Color.white,
-      BIZUDPGothic_Bold,
-      38,
-      p.CENTER,
-      p.CENTER,
-      match.blue_team.is_auto ? '自動' : '手動',
-      p.width - 600 + 80,
-      133,
-    );
-    drawText(
-      p,
-      Color.black,
-      BIZUDPGothic_Bold,
-      38,
-      p.CENTER,
-      p.CENTER,
-      match.blue_team.immigration ? '入国済' : '未入国',
-      p.width - 600 + 80,
-      203,
-    );
+    // drawText(
+    //   p,
+    //   Color.white,
+    //   BIZUDPGothic_Bold,
+    //   38,
+    //   p.CENTER,
+    //   p.CENTER,
+    //   match.blue_team.is_auto ? '自動' : '手動',
+    //   p.width - 600 + 80,
+    //   133,
+    // );
+    // drawText(
+    //   p,
+    //   Color.black,
+    //   BIZUDPGothic_Bold,
+    //   38,
+    //   p.CENTER,
+    //   p.CENTER,
+    //   match.blue_team.immigration ? '入国済' : '未入国',
+    //   p.width - 600 + 80,
+    //   203,
+    // );
 
     // 中央タイマーなど
     drawRect(
@@ -309,39 +309,39 @@ new p5((p: p5) => {
       80,
     );
     // ポール
-    drawCircle(
-      p,
-      match.red_team.type_1_a
-        ? Color.red
-        : match.blue_team.type_1_b
-          ? Color.blue
-          : Color.white,
-      p.width / 2 + 250 - 40,
-      40,
-      40,
-    );
-    drawCircle(
-      p,
-      match.red_team.type_2
-        ? Color.red
-        : match.blue_team.type_2
-          ? Color.blue
-          : Color.white,
-      p.width / 2 + 250 - 40,
-      100,
-      40,
-    );
-    drawCircle(
-      p,
-      match.red_team.type_1_b
-        ? Color.red
-        : match.blue_team.type_1_a
-          ? Color.blue
-          : Color.white,
-      p.width / 2 + 250 - 40,
-      160,
-      40,
-    );
+    // drawCircle(
+    //   p,
+    //   match.red_team.type_1_a
+    //     ? Color.red
+    //     : match.blue_team.type_1_b
+    //       ? Color.blue
+    //       : Color.white,
+    //   p.width / 2 + 250 - 40,
+    //   40,
+    //   40,
+    // );
+    // drawCircle(
+    //   p,
+    //   match.red_team.type_2
+    //     ? Color.red
+    //     : match.blue_team.type_2
+    //       ? Color.blue
+    //       : Color.white,
+    //   p.width / 2 + 250 - 40,
+    //   100,
+    //   40,
+    // );
+    // drawCircle(
+    //   p,
+    //   match.red_team.type_1_b
+    //     ? Color.red
+    //     : match.blue_team.type_1_a
+    //       ? Color.blue
+    //       : Color.white,
+    //   p.width / 2 + 250 - 40,
+    //   160,
+    //   40,
+    // );
 
     if (rosConnected) {
       p.fill('green');
@@ -375,10 +375,10 @@ function drawRect(
   p.rect(x, y, w, h, tl, tr, br, bl);
 }
 
-function drawCircle(p: p5, color: string, x: number, y: number, d: number) {
-  fillWithHex(p, color);
-  p.circle(x, y, d);
-}
+// function drawCircle(p: p5, color: string, x: number, y: number, d: number) {
+//   fillWithHex(p, color);
+//   p.circle(x, y, d);
+// }
 
 function drawText(
   p: p5,
