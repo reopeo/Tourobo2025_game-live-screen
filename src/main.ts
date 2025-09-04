@@ -127,7 +127,7 @@ new p5((p: p5) => {
     //   160,
     //   70,
     // );
-    drawRect(p, Color.white, 600 - 160, 170, 160, 70, 0, 0, 0, 20);
+    // drawRect(p, Color.white, 600 - 160, 170, 160, 70, 0, 0, 0, 20);
     drawText(
       p,
       Color.white,
@@ -209,7 +209,7 @@ new p5((p: p5) => {
     //   160,
     //   70,
     // );
-    drawRect(p, Color.white, p.width - 600, 170, 160, 70, 0, 0, 20, 0);
+    // drawRect(p, Color.white, p.width - 600, 170, 160, 70, 0, 0, 20, 0);
     drawText(
       p,
       Color.white,
@@ -342,6 +342,54 @@ new p5((p: p5) => {
     //   160,
     //   40,
     // );
+
+    // --- 3x3 grid for type_1_a~type_3_c ---
+    if (match) {
+      const gridSizeX = 50;
+      const gridSizeY = 20;
+      const gridPadding = 10;
+      const gridTotalX = gridSizeX * 3 + gridPadding * 2;
+      const gridTotalY = gridSizeY * 3 + gridPadding * 2;
+      const gridX = p.width / 2 - gridTotalX / 2;
+      const gridY = 200 + 24;
+
+      drawRect(
+        p,
+        Color.white,
+        gridX - 16,
+        gridY - 16,
+        gridTotalX + 32,
+        gridTotalY + 32,
+        20, 20, 20, 20
+      );
+
+      function getCellColor(val: number) {
+        if (val === Winner.RED) return Color.red;
+        if (val === Winner.BLUE) return Color.blue;
+        return '#cccccc'; // gray for UNKNOWN
+      }
+
+      const types = [
+        [match.type_3_a, match.type_3_b, match.type_3_c],
+        [match.type_2_a, match.type_2_b, match.type_2_c],
+        [match.type_1_a, match.type_1_b, match.type_1_c],
+      ];
+
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+          drawRect(
+            p,
+            getCellColor(types[row][col]),
+            gridX + col * (gridSizeX + gridPadding),
+            gridY + row * (gridSizeY + gridPadding),
+            gridSizeX,
+            gridSizeY,
+            10, 10, 10, 10
+          );
+        }
+      }
+    }
+    // --- end 3x3 grid ---
 
     if (rosConnected) {
       p.fill('green');
